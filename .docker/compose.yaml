@@ -1,0 +1,37 @@
+name: portfolio
+services:
+  cli:
+    build:
+      context: ./../
+      target: builder
+      dockerfile: ./.docker/Dockerfile
+    volumes:
+      - ./../:/app
+    env_file:
+      - ./../.env
+  dev:
+    build:
+      context: ./../
+      target: dev
+      dockerfile: ./.docker/Dockerfile
+    volumes:
+      - ./../:/app
+    environment:
+      NODE_ENV: development
+    deploy:
+      replicas: 1
+    ports:
+      - "3000:3000"
+  prod:
+    build:
+      context: ./../
+      target: prod
+      dockerfile: ./.docker/Dockerfile
+    environment:
+      NODE_ENV: production
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3000:3000"
