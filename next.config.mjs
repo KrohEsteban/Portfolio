@@ -1,15 +1,16 @@
+const isAnalyze = process.env.ANALYZE === 'true';
+const withBundleAnalyzer = isAnalyze
+  ? require('@next/bundle-analyzer')({
+      enabled: true,
+    })
+  : (config) => config;
+
 /** @type {import('next').NextConfig} */
-import withBundleAnalyzer from "@next/bundle-analyzer";
-
-const nextConfig = {
+const nextConfig = withBundleAnalyzer({
+  reactStrictMode: true,
   images: {
-    domains: ["api.estebankroh.com"],
+    domains: ['api.estebankroh.com'],
   },
-};
-
-// Configuración del Bundle Analyzer
-const withAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true", // Activa el análisis con la variable de entorno
 });
 
-export default withAnalyzer(nextConfig);
+export default nextConfig;
